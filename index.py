@@ -55,12 +55,11 @@ def find_and_click(img_name):
         # cv2.imshow("Result", screenshot_cv)
         # cv2.waitKey(0)
         # cv2.destroyAllWindows()
-
 def run():
     while True:
         print(1)
         # 暂停一秒
-        time.sleep(1)
+        time.sleep(.5)
         find_and_click("tianfu")
 
 run()
