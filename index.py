@@ -40,7 +40,6 @@ def find_and_click(img_name):
         y += w // 2
 
         pyautogui.click(x, y)
-        # pyautogui.moveTo(x, y)
 
     # 显示结果
     # cv2.imshow("Result", screenshot_cv)
