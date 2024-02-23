@@ -45,12 +45,9 @@ def find_and_click(img_name):
     # cv2.imshow("Result", screenshot_cv)
     # cv2.waitKey(0)
     # cv2.destroyAllWindows()
-
 def run():
-    while True:
-        # 每秒运行一次的代码
-        print("This code will run every second.")
 
+    while True:
         # 暂停一秒
         # time.sleep(1)
 
@@ -59,6 +56,7 @@ def run():
 
         # 检查每个文件名是否以 .png 结尾
         for file in files:
+            time.sleep(.1)
             if file.endswith(".png"):
                 # 调用图像识别和点击方法
                 find_and_click(file)
