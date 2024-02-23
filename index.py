@@ -52,7 +52,7 @@ def run():
         print("This code will run every second.")
 
         # 暂停一秒
-        time.sleep(1)
+        # time.sleep(1)
 
         # 获取当前目录中的所有文件名
         files = os.listdir(".")
