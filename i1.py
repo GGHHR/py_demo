@@ -2,17 +2,15 @@ import asyncio
 import sqlite3
 from pyppeteer import launch
 import psutil
-import os
 from pathlib import Path
 import json
 
-async def get_running_v2rayn_path():
+async def get_running_v2rayn_root_path():
     for proc in psutil.process_iter(attrs=['pid', 'name']):
-        if proc.info['name'] == 'v2rayn.exe':
-            return proc.exe().parent
-    print('v2rayn is not running')
+        if 'v2rayN' in proc.info['name']:
+            return Path(proc.exe()).parent
+    print('V2RayN is not running')
     return None
-
 async def up_sub_item(url, remarks, id, convert_target, command):
     if command:
         output_value = Path(command) / 'guiConfigs/guiNDB.db'
@@ -38,7 +36,7 @@ class SubGet:
             if url.endswith(("yaml", "yml")):
                 convert_target = "mixed"
             print(id, url)
-            await up_sub_item(url, remarks, id, convert_target, await get_running_v2rayn_path())
+            await up_sub_item(url, remarks, id, convert_target, await get_running_v2rayn_root_path())
         else:
             self.url = url
             self.listEl = sel[0]
@@ -65,7 +63,7 @@ class SubGet:
         if match.endswith(("yaml", "yml")):
             convert_target = "mixed"
         print(self.remarks, match)
-        await up_sub_item(match, self.remarks, self.id, convert_target, await get_running_v2rayn_path())
+        await up_sub_item(match, self.remarks, self.id, convert_target, await get_running_v2rayn_root_path())
         await page.close()
 
 async def main():
