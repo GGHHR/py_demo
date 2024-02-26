@@ -73,6 +73,7 @@ async def main():
             const element = document.querySelector('pre');
             return element ? element.textContent : null;
         }''')
+        open('./init.json', 'w', encoding='utf-8').write(content)
         select = json.loads(content)
         await page.close()
         print('Request successful')
