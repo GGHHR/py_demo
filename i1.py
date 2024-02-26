@@ -4,6 +4,7 @@ from pyppeteer import launch
 import psutil
 from pathlib import Path
 import json
+import re
 
 async def get_running_v2rayn_root_path():
     for proc in psutil.process_iter(attrs=['pid', 'name']):
@@ -26,45 +27,33 @@ async def up_sub_item(url, remarks, id, convert_target, command):
     else:
         print('v2rayn is not running')
 
-class SubGet:
-    def __init__(self, browser):
-        self.browser = browser
+async def sub_get(browser, url, sel, remarks, id):
+    convert_target = ""
+    if url.endswith(("yaml", "yml")):
+        convert_target = "mixed"
+    print(id, url)
+    await up_sub_item(url, remarks, id, convert_target, await get_running_v2rayn_root_path())
 
-    async def initialize(self, url, sel, remarks, id):
-        if sel is None:
-            convert_target = ""
-            if url.endswith(("yaml", "yml")):
-                convert_target = "mixed"
-            print(id, url)
-            await up_sub_item(url, remarks, id, convert_target, await get_running_v2rayn_root_path())
-        else:
-            self.url = url
-            self.listEl = sel[0]
-            self.el = sel[1]
-            self.remarks = remarks
-            self.id = id
-            await self.start()
-
-    async def start(self):
-        page = await self.browser.newPage()
-        await page.goto(self.url, {'timeout': 99999})
+    if sel is not None:
+        page = await browser.newPage()
+        await page.goto(url, {'timeout': 99999})
         content = ''
-        if self.listEl:
-            await page.waitForSelector(self.listEl, {'timeout': 99999})
-            content = await page.evaluate(f'(element) => document.querySelector("{self.listEl}").href')
+        if sel[0]:
+            await page.waitForSelector(sel[0], {'timeout': 99999})
+            content = await page.evaluate(f'(element) => document.querySelector("{sel[0]}").href')
             await page.goto(content, {'timeout': 99999})
 
-        await page.waitForSelector(self.el, {'timeout': 99999})
-        content = await page.evaluate(f'(element) => document.querySelector("{self.el}").textContent')
+        await page.waitForSelector(sel[1], {'timeout': 99999})
+        content = await page.evaluate(f'(element) => document.querySelector("{sel[1]}").textContent')
 
         url_pattern = r'https?://[^\s/$.?#].[^\s]*'
         match = re.search(url_pattern, content)[0]
-        convert_target = ""
         if match.endswith(("yaml", "yml")):
             convert_target = "mixed"
-        print(self.remarks, match)
-        await up_sub_item(match, self.remarks, self.id, convert_target, await get_running_v2rayn_root_path())
+        print(remarks, match)
+        await up_sub_item(match, remarks, id, convert_target, await get_running_v2rayn_root_path())
         await page.close()
+
 
 async def main():
     browser = await launch(headless=True, slowMo=250, executablePath='C:/Program Files (x86)/Microsoft/Edge/Application/msedge.exe')
@@ -84,8 +73,10 @@ async def main():
             select = json.load(f)
         print('Request failed, using local json file')
 
-    await asyncio.gather(*[SubGet(browser).initialize(v['url'], v.get('sel'), i + 1, i + 1) for i, v in enumerate(select['select'])])
 
+    print(select)
+
+    await asyncio.gather( *[sub_get(browser, v['url'], v.get('sel'), i + 1, i + 1) for i, v in enumerate(select['select'])])
     await browser.close()
 
 asyncio.run(main())
