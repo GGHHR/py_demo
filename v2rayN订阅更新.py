@@ -82,9 +82,7 @@ async def main():
             select = json.load(f)
         print('Request failed, using local json file')
 
-    for i,v in enumerate(select['select']):
-        print(v)
-        await sub_get(browser, v['url'], v.get('sel'), i + 1, i + 1)
+    await asyncio.gather(*[sub_get(browser, v['url'], v.get('sel'), i + 1, i + 1) for i, v in enumerate(select['select'])])
 
     await browser.close()
     try:
