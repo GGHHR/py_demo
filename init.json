@@ -7,6 +7,38 @@
         ".section p"
       ],
       "id": 1
+    },
+    {
+      "url": "https://clashnode.com/",
+      "sel": [
+        "ul  li[cp-post-item]:nth-child(2) a",
+        ".post-content-content h2+p+p+p"
+      ],
+      "id": 2
+    },
+    {
+      "url": "https://www.butnono.com/daily-v2ray-airport.html",
+      "sel": [
+        null,
+        "a[rel=\"noreferrer noopener sponsored nofollow\"]"
+      ],
+      "id": 3
+    },
+    {
+      "url": "https://www.iyio.net/search/label/%E5%85%8D%E8%B4%B9%E8%8A%82%E7%82%B9",
+      "sel": [
+        ".clamp",
+        "pre"
+      ],
+      "id": 4
+    },
+    {
+      "url": "https://github.com/anaer/Sub",
+      "sel": [
+        null,
+        "article code"
+      ],
+      "id": 5
     }
   ]
 }

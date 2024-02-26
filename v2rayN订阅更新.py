@@ -31,6 +31,7 @@ async def up_sub_item(url, remarks, id, convert_target, command):
 async def sub_get(browser, url, sel, remarks, id):
 
     if sel is not None:
+
         page = await browser.newPage()
         await page.goto(url,{'timeout': 99999})
         content = ''
@@ -80,7 +81,9 @@ async def main():
             select = json.load(f)
         print('Request failed, using local json file')
 
-    await asyncio.gather(*[sub_get(browser, v['url'], v.get('sel'), i + 1, i + 1) for i, v in enumerate(select['select'])])
+    for i,v in enumerate(select['select']):
+        print(v)
+        await sub_get(browser, v['url'], v.get('sel'), i + 1, i + 1)
 
     await browser.close()
     try:
