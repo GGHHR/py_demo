@@ -52,12 +52,11 @@ def move_mouse_to_image(file_path):
 
 def run():
     keyboard.add_hotkey('esc', lambda: os._exit(0))
+
+    paths = find_and_click(os.path.dirname(os.path.abspath(__file__)))
     while True:
         print(1)
         time.sleep(0.5)
-
-        paths = find_and_click(os.path.dirname(os.path.abspath(__file__)))
-
         for file in paths:
             move_mouse_to_image(file)
 
