@@ -1,4 +1,7 @@
+import os
 import time
+
+import psutil
 import requests
 
 
@@ -18,9 +21,20 @@ def find(obj):
 
 
 # 获取json
-result = first()
+# result = first()
 
-for item in result['select']:
-    find(item)
+# for item in result['select']:
+#     find(item)
 
-time.sleep(5000)
+def get_v2rayN_process():
+    for proc in psutil.process_iter(['name', 'exe']):
+        if proc.info['name'] == 'v2rayN.exe':
+            exe_path = proc.info['exe']
+            if exe_path and os.path.exists(exe_path):
+                os.path.dirname(exe_path)
+                return os.path.dirname(exe_path)
+    return None
+#获取v2ray路径
+print(get_v2rayN_process()+r'\guiConfigs\guiNDB.db')
+
+# time.sleep(5000)
