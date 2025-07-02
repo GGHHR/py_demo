@@ -51,12 +51,14 @@ def move_mouse_to_image(file_path):
         pyautogui.click(x, y)
 
 def run():
+    #退出程序
     keyboard.add_hotkey('esc', lambda: os._exit(0))
-
+    # 查找图片路径
     paths = find_and_click(os.path.dirname(os.path.abspath(__file__)))
     while True:
         time.sleep(0.5)
         for file in paths:
+            # 识别图片
             move_mouse_to_image(file)
 
 run()
