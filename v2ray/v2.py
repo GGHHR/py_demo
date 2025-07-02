@@ -1,3 +1,4 @@
+import time
 import requests
 
 
@@ -12,7 +13,7 @@ def find(obj):
     if 'sel' in obj:
         return obj['sel']
     else:
-        if 'yaml' in obj['url']:
+        if 'yaml' in obj['url'] or 'yml' in obj['url']:
             print(obj['url'])
 
 
@@ -22,4 +23,4 @@ result = first()
 for item in result['select']:
     find(item)
 
-
+time.sleep(5000)
