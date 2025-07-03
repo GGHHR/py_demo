@@ -1,0 +1,365 @@
+{
+    "select": [
+        {
+            "url": " https://ghfile.geekertao.top/https://github.com/PuddinCat/BestClash/blob/main/proxies.yaml",
+            "id": 1
+        },
+        {
+            "url": " https://raw.githubusercontent.com/ccpthisbigdog/freedomchina/refs/heads/main/subdom.txt",
+            "id": 2
+        },
+        {
+            "url": "https://raw.githubusercontent.com/hello-world-1989/cn-news/main/end-gfw-together",
+            "id": 3
+        },
+        {
+            "url": "https://raw.githubusercontent.com/Leon406/SubCrawler/refs/heads/main/sub/share/v2",
+            "id": 4
+        },
+        {
+            "url": "https://www.xrayvip.com/free.txt",
+            "id": 5
+        },
+        {
+            "url": "https://d.zrf.me/vless-base64",
+            "id": 6
+        },
+        {
+            "url": "https://raw.githubusercontent.com/a2470982985/getNode/main/v2ray.txt",
+            "id": 7
+        },
+        {
+            "url": "https://raw.githubusercontent.com/snakem982/proxypool/main/source/v2ray-2.txt",
+            "id": 8
+        },
+        {
+            "url": "https://raw.githubusercontent.com/snakem982/proxypool/main/source/v2ray.txt",
+            "id": 9
+        },
+        {
+            "url": "https://raw.githubusercontent.com/umelabs/node.umelabs.dev/master/Subscribe/v2ray.md",
+            "id": 10
+        },
+        {
+            "url": "https://ghp.ci/https://raw.githubusercontent.com/free18/v2ray/refs/heads/main/v.txt",
+            "id": 11
+        },
+        {
+            "url": "https://cdn.jsdelivr.net/gh/ermaozi01/free_clash_vpn/subscribe/v2ray.txt",
+            "id": 12
+        },
+        {
+            "url": "https://github.com/qzwqzw/freeVpn",
+            "sel": [
+                "article code"
+            ],
+            "id": 13
+        },
+        {
+            "url": "https://github.com/John19187/v2ray-SSR-Clash-Verge-Shadowrocke",
+            "sel": [
+                "article pre:nth-of-type(6)"
+            ],
+            "id": 14
+        },
+        {
+            "url": "https://v2raynode.org/free/",
+            "sel": [
+                ".wp-block-preformatted"
+            ],
+            "id": 15
+        },
+        {
+            "url": "https://github.com/v2rayw/v2rayw.github.io",
+            "sel": [
+                "article ul:nth-of-type(2) li"
+            ],
+            "id": 16
+        },
+        {
+            "url": "https://github.com/v2raynodes/v2raynodes.github.io",
+            "sel": [
+                "article ul:nth-of-type(2) li a"
+            ],
+            "id": 17
+        },
+        {
+            "url": "https://it.weoknow.com/data/dayupdate/1/z1.txt",
+            "id": 18
+        },
+        {
+            "url": "https://github.com/mksshare/mksshare.github.io",
+            "sel": [
+                "article code"
+            ],
+            "id": 19
+        },
+        {
+            "url": "https://github.com/tolinkshare2/tolinkshare2.github.io",
+            "sel": [
+                "article code"
+            ],
+            "id": 20
+        },
+        {
+            "url": "https://www.freev2raynode.com/free-node-subscription/",
+            "sel": [
+                ".item-heading a",
+                ".post-content-content p:nth-of-type(14)"
+            ],
+            "id": 21
+        },
+        {
+            "url": "https://www.115xmw.com/",
+            "sel": [
+                ".i-article-summary a",
+                "article p:nth-of-type(9)"
+            ],
+            "id": 22
+        },
+        {
+            "url": "https://www.85la.com/internet-access/free-network-nodes",
+            "sel": [
+                ".paging-aa a",
+                "div div p a[rel=\"noopener\"]"
+            ],
+            "id": 23
+        },
+        {
+            "url": "https://nodecat.org/",
+            "sel": [
+                ".post_def_title a",
+                "article p:nth-of-type(14)"
+            ],
+            "id": 24
+        },
+        {
+            "url": "https://betternode.org/",
+            "sel": [
+                ".post_def_title a",
+                "article p:nth-of-type(16)"
+            ],
+            "id": 25
+        },
+        {
+            "url": "https://wenode.cc/freenode",
+            "sel": [
+                ".post_def_title a",
+                "article p:nth-of-type(15)"
+            ],
+            "id": 26
+        },
+        {
+            "url": "https://v2cross.com/1884.html",
+            "sel": [
+                ".entry-content h5"
+            ],
+            "id": 27
+        },
+        {
+            "url": "https://tglaoshiji.github.io/clashnodev2raynode//",
+            "sel": [
+                ".repo-list-item+.repo-list-item a",
+                "article ul:nth-of-type(2) li"
+            ],
+            "id": 28
+        },
+        {
+            "url": "https://free.datiya.com/",
+            "sel": [
+                ".fw1  a",
+                ".lh-copy pre:nth-of-type(2) code"
+            ],
+            "id": 29
+        },
+        {
+            "url": "https://telegeam.github.io/clashv2rayshare/",
+            "sel": [
+                ".repo-list-item+.repo-list-item a",
+                "article p:nth-of-type(50)"
+            ],
+            "id": 30
+        },
+        {
+            "url": "https://nodedog.org/t/v2ray",
+            "sel": [
+                ".post_def_title a",
+                ".wznrys p:nth-child(21)"
+            ],
+            "id": 31
+        },
+        {
+            "url": "https://www.wanzhuanmi.com/",
+            "sel": [
+                ".excerpt-latest a",
+                "p:nth-of-type(12)"
+            ],
+            "id": 32
+        },
+        {
+            "url": "https://nodefree.org/",
+            "sel": [
+                ".post-title a",
+                ".section p"
+            ],
+            "id": 33
+        },
+        {
+            "url": "https://clashnode.github.io/",
+            "sel": [
+                ".xcblog-blog-item:nth-of-type(1) a",
+                ".xcblog-blog-detail .xcblog-clash-box p"
+            ],
+            "id": 34
+        },
+        {
+            "url": "https://t.me/s/hkaa0",
+            "sel": [
+                ".media_supported_cont code"
+            ],
+            "id": 35
+        },
+        {
+            "url": "https://www.freeclashnode.com/free-node/",
+            "sel": [
+                ".item-heading a",
+                ".post-content-content p:nth-of-type(15)"
+            ],
+            "id": 36
+        },
+        {
+            "url": "https://raw.githubusercontent.com/ssrsub/ssr/master/V2Ray",
+            "id": 37
+        },
+        {
+            "url": "https://raw.githubusercontent.com/ermaozi/get_subscribe/main/subscribe/v2ray.txt",
+            "id": 38
+        },
+        {
+            "url": "https://proxy.v2gh.com/https://raw.githubusercontent.com/Pawdroid/Free-servers/main/sub",
+            "id": 39
+        },
+        {
+            "url": "https://github.com/ripaojiedian/freenode",
+            "sel": [
+                "article [dir=\"auto\"]:nth-child(9) a"
+            ],
+            "id": 40
+        },
+        {
+            "url": "https://freenode.openrunner.net/tag/v2ray/",
+            "sel": [
+                ".mb-5 ",
+                ".highlight:nth-of-type(2)  code "
+            ],
+            "id": 41
+        },
+        {
+            "url": "https://www.mibei77.com/",
+            "sel": [
+                ".entry-title a",
+                ".post-body p:nth-of-type(9)"
+            ],
+            "id": 42
+        },
+        {
+            "url": "https://www.crazygeeky.com/category/151/",
+            "sel": [
+                ".info-title .a-link",
+                ".p-block p:nth-of-type(18) a"
+            ],
+            "id": 43
+        },
+        {
+            "url": "https://raw.githubusercontent.com/freefq/free/master/v2",
+            "id": 44
+        },
+        {
+            "url": "https://github.com/Flik6/getNode",
+            "sel": [
+                "article ul:nth-child(6) li:nth-child(4)"
+            ],
+            "id": 45
+        },
+        {
+            "url": "https://raw.githubusercontent.com/aiboboxx/v2rayfree/main/v2",
+            "id": 46
+        },
+        {
+            "url": "https://raw.githubusercontent.com/somemoo/v2rayfree/main/v2rayfree",
+            "id": 47
+        },
+        {
+            "url": "https://raw.githubusercontent.com/aiboboxx/clashfree/main/clash.yml",
+            "id": 48
+        },
+        {
+            "url": "https://oneclash.cc/",
+            "sel": [
+                ".post_def_title a",
+                ".wznrys p:nth-of-type(15)"
+            ],
+            "id": 49
+        },
+        {
+            "url": "https://v2rayshare.com/",
+            "sel": [
+                ".post-title a",
+                ".single-content p:nth-of-type(14)"
+            ],
+            "id": 50
+        },
+        {
+            "url": "https://raw.githubusercontent.com/Huibq/TrojanLinks/master/links/trojan",
+            "id": 51
+        },
+        {
+            "url": "https://raw.githubusercontent.com/Huibq/TrojanLinks/master/links/vmess",
+            "id": 52
+        },
+        {
+            "url": "https://raw.githubusercontent.com/Huibq/TrojanLinks/master/links/vless",
+            "id": 53
+        },
+        {
+            "url": "https://raw.githubusercontent.com/Huibq/TrojanLinks/master/links/temporary",
+            "id": 54
+        },
+        {
+            "url": "https://raw.githubusercontent.com/chengaopan/AutoMergePublicNodes/master/list.txt",
+            "id": 55
+        },
+        {
+            "url": "https://raw.githubusercontent.com/peasoft/NoMoreWalls/master/list.txt",
+            "id": 56
+        },
+        {
+            "url": "https://raw.githubusercontent.com/barry-far/V2ray-Configs/main/Splitted-By-Protocol/vmess.txt",
+            "id": 57
+        },
+        {
+            "url": "https://jsd.onmicrosoft.cn/gh/anaer/Sub@main/clash.yaml",
+            "id": 58
+        },
+        {
+            "url": "https://q3dlaxpoaq.github.io/APIs/sc0.yaml",
+            "id": 59
+        },
+        {
+            "url": "https://q3dlaxpoaq.github.io/APIs/sc2.yaml",
+            "id": 60
+        },
+        {
+            "url": "https://q3dlaxpoaq.github.io/APIs/sc3.yaml",
+            "id": 61
+        },
+        {
+            "url": "https://q3dlaxpoaq.github.io/APIs/sc4.yaml",
+            "id": 62
+        },
+        {
+            "url": "https://raw.githubusercontent.com/shaoyouvip/free/refs/heads/main/base64.txt",
+            "id": 63
+        }
+    ]
+}
