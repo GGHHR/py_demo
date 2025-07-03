@@ -146,8 +146,8 @@ async def main():
         await asyncio.gather(*tasks)
 
         cleanup_database(sorted(not_clean_arr))
-        with open('init.json', 'w') as f:
-            json.dump(select, f)
+        # with open('init.json', 'w') as f:
+        #     json.dump(select, f)
     finally:
         await browser.close()
 
