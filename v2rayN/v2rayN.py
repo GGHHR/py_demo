@@ -120,16 +120,17 @@ async def main():
     browser = await launch(headless=True, executablePath='C:\Program Files (x86)\Microsoft\Edge\Application\msedge.exe',
                            args=['--blink-settings=imagesEnabled=false'])
     try:
-        try:
-            response = requests.get('https://raw.githubusercontent.com/GGHHR/node_demo/master/v2rayn/init.json')
-            content = response.text
-            select = json.loads(content)
-            print('Fetched JSON successfully')
-        except Exception as e:
-            print('Failed to fetch JSON, using local file')
-            with open('init.json', 'r') as f:
-                select = json.load(f)
-
+        # try:
+        #     response = requests.get('https://raw.githubusercontent.com/GGHHR/py_demo/master/v2rayn/init.json')
+        #     content = response.text
+        #     select = json.loads(content)
+        #     print('Fetched JSON successfully')
+        # except Exception as e:
+        #     print('Failed to fetch JSON, using local file')
+        #     with open('init.json', 'r') as f:
+        #         select = json.load(f)
+        with open('init.json', 'r') as f:
+            select = json.load(f)
         for i, v in enumerate(select['select']):
             v['id'] = i + 1
 
