@@ -4,7 +4,6 @@ import psutil
 import os
 import sqlite3
 import json
-import requests
 import re
 
 not_clean_arr = set()
