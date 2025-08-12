@@ -115,9 +115,9 @@ def cleanup_database(num):
 
 async def main():
     global select, not_clean_arr, num_add
+
     executable = "C:\\Program Files (x86)\\Microsoft\\Edge\\Application\\msedge.exe"
-    browser = await launch(headless=True, executablePath=executable,
-                           args=['--blink-settings=imagesEnabled=false'])
+    browser = await launch(headless=True, executablePath=executable,args=['--blink-settings=imagesEnabled=false'])
 
     try:
         with open('init.json', 'r') as f:

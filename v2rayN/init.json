@@ -96,14 +96,6 @@
             "id": 20
         },
         {
-            "url": "https://www.freev2raynode.com/free-node-subscription/",
-            "sel": [
-                ".item-heading a",
-                ".post-content-content p:nth-of-type(14)"
-            ],
-            "id": 21
-        },
-        {
             "url": "https://www.115xmw.com/",
             "sel": [
                 ".i-article-summary a",
