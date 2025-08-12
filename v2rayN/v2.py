@@ -66,7 +66,7 @@ class SubGet:
         else:
             page = await self.browser.newPage()
             try:
-                await page.goto(url, {'timeout': 120000})
+                await page.goto(url, {'timeout': 30000})
                 if isinstance(sel, list) and len(sel) >= 1:
                     if len(sel) == 1:
                         list_el = None
@@ -76,17 +76,17 @@ class SubGet:
                         el = sel[1]
                     if list_el:
                         try:
-                            await page.waitForSelector(list_el, {'timeout': 120000})
+                            await page.waitForSelector(list_el, {'timeout': 30000})
                             content = await page.evaluate('''(listEl) => {
                                 const element = document.querySelector(listEl);
                                 return element ? element.href : null;
                             }''', list_el)
                             if content:
-                                await page.goto(content, {'timeout': 120000})
+                                await page.goto(content, {'timeout': 30000})
                         except Exception:
                             # 若跳转失败，继续尝试在当前页抓取
                             pass
-                    await page.waitForSelector(el, {'timeout': 120000})
+                    await page.waitForSelector(el, {'timeout': 30000})
                     contents = await page.evaluate('''(el) => {
                         const elements = document.querySelectorAll(el);
                         return Array.from(elements).map(element => element.textContent);
