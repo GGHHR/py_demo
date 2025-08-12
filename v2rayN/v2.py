@@ -154,7 +154,7 @@ async def main():
         for i, v in enumerate(select['select']):
             v['id'] = i + 1
 
-        sem = asyncio.Semaphore(10)
+        sem = asyncio.Semaphore(6)
 
         async def task(v, i):
             async with sem:
