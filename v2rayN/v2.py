@@ -115,19 +115,11 @@ def cleanup_database(num):
 
 async def main():
     global select, not_clean_arr, num_add
-    # browser = await launch(headless=True, args=['--blink-settings=imagesEnabled=false'])
-    browser = await launch(headless=True, executablePath='C:\Program Files (x86)\Microsoft\Edge\Application\msedge.exe',
+    executable = "C:\\Program Files (x86)\\Microsoft\\Edge\\Application\\msedge.exe"
+    browser = await launch(headless=True, executablePath=executable,
                            args=['--blink-settings=imagesEnabled=false'])
+
     try:
-        # try:
-        #     response = requests.get('https://raw.githubusercontent.com/GGHHR/py_demo/master/v2rayn/init.json')
-        #     content = response.text
-        #     select = json.loads(content)
-        #     print('Fetched JSON successfully')
-        # except Exception as e:
-        #     print('Failed to fetch JSON, using local file')
-        #     with open('init.json', 'r') as f:
-        #         select = json.load(f)
         with open('init.json', 'r') as f:
             select = json.load(f)
         for i, v in enumerate(select['select']):
@@ -146,8 +138,6 @@ async def main():
         await asyncio.gather(*tasks)
 
         cleanup_database(sorted(not_clean_arr))
-        # with open('init.json', 'w') as f:
-        #     json.dump(select, f)
     finally:
         await browser.close()
 
