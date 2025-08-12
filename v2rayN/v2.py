@@ -107,6 +107,7 @@ class SubGet:
                             # 保持 remarks 有意义，使用 match_url 作为 remarks
                             up_sub_item(match_url, match_url, num, convert_target)
             finally:
+                await asyncio.sleep(1)
                 await page.close()
 
 
