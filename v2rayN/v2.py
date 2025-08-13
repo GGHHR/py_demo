@@ -1,5 +1,5 @@
 import asyncio
-from pyppeteer import launch
+from playwright.async_api import async_playwright
 import psutil
 import os
 import sqlite3
@@ -40,7 +40,7 @@ def up_sub_item(url, remarks, id_, convert_target):
             VALUES (?, ?, ?, ?, ?)
         '''
         try:
-            cursor.execute(insert_or_update_sql, (str(id_), url, str(id_), convert_target, id_))
+            cursor.execute(insert_or_update_sql, (str(remarks), url, str(id_), convert_target, id_))
             conn.commit()
         except sqlite3.Error as e:
             print(f"Database error: {e}")
@@ -63,53 +63,57 @@ class SubGet:
             print(id_, url)
             # 保持 remarks 有意义，使用 url 作为 remarks
             up_sub_item(url, url, id_, convert_target)
-        else:
-            page = await self.browser.newPage()
-            page.setDefaultNavigationTimeout(60000)
-            try:
-                await page.goto(url)
-                if isinstance(sel, list) and len(sel) >= 1:
-                    if len(sel) == 1:
-                        list_el = None
-                        el = sel[0]
-                    else:
-                        list_el = sel[0]
-                        el = sel[1]
-                    if list_el:
-                        try:
-                            await page.waitForSelector(list_el)
-                            content = await page.evaluate('''(listEl) => {
-                                const element = document.querySelector(listEl);
-                                return element ? element.href : null;
-                            }''', list_el)
-                            if content:
-                                await page.goto(content)
-                        except Exception:
-                            # 若跳转失败，继续尝试在当前页抓取
-                            pass
-                    await page.waitForSelector(el)
-                    contents = await page.evaluate('''(el) => {
-                        const elements = document.querySelectorAll(el);
-                        return Array.from(elements).map(element => element.textContent);
-                    }''', el)
-                    url_pattern = re.compile(r'https?://[^\s/$.?#].[^\s]*')
-                    for i, content in enumerate(contents):
-                        match = url_pattern.search(content)
-                        if match:
-                            match_url = match.group(0)
-                            convert_target = "mixed" if match_url.endswith(('.yaml', '.yml')) else ""
-                            num = id_
-                            if i > 0:
-                                num_add += 1
-                                # 如果 select 存在则按原逻辑用 len(select['select']) + num_add
-                                base = len(select['select']) if select and 'select' in select else 0
-                                num = base + num_add
-                            print(id_, num, match_url)
-                            # 保持 remarks 有意义，使用 match_url 作为 remarks
-                            up_sub_item(match_url, match_url, num, convert_target)
-            finally:
-                await asyncio.sleep(1)
-                await page.close()
+            return
+
+        page = await self.browser.new_page()
+        page.set_default_navigation_timeout(60000)
+        try:
+            await page.goto(url, timeout=60000)
+            if isinstance(sel, list) and len(sel) >= 1:
+                if len(sel) == 1:
+                    list_el = None
+                    el = sel[0]
+                else:
+                    list_el = sel[0]
+                    el = sel[1]
+
+                # 如果需要通过 list_el 先跳转到链接
+                if list_el:
+                    try:
+                        # 先等待元素出现（非阻塞失败会抛出）
+                        await page.wait_for_selector(list_el, timeout=10000)
+                        element = await page.query_selector(list_el)
+                        if element:
+                            href = await element.get_attribute('href')
+                            if href:
+                                # 有时候是相对路径，Playwright 会处理相对链接（基于当前url）
+                                await page.goto(href, timeout=60000)
+                    except Exception:
+                        # 若跳转失败，继续尝试在当前页抓取
+                        pass
+
+                # 等主选择器出现并抓取所有元素文本
+                await page.wait_for_selector(el, timeout=60000)
+                contents = await page.eval_on_selector_all(el, "els => els.map(e => e.textContent)")
+                url_pattern = re.compile(r'https?://[^\s/$.?#].[^\s]*')
+                for i, content in enumerate(contents):
+                    if not content:
+                        continue
+                    match = url_pattern.search(content)
+                    if match:
+                        match_url = match.group(0)
+                        convert_target = "mixed" if match_url.endswith(('.yaml', '.yml')) else ""
+                        num = id_
+                        if i > 0:
+                            num_add += 1
+                            base = len(select['select']) if select and 'select' in select else 0
+                            num = base + num_add
+                        print(id_, num, match_url)
+                        # 保持 remarks 有意义，使用 match_url 作为 remarks
+                        up_sub_item(match_url, match_url, num, convert_target)
+        finally:
+            await asyncio.sleep(1)
+            await page.close()
 
 
 def cleanup_database(num):
@@ -143,35 +147,37 @@ def cleanup_database(num):
 async def main():
     global select, not_clean_arr, num_add
 
+    # 如果你想使用已安装的 Edge，可用 executable 指定 Edge 路径，
+    # Playwright 也支持 channel='msedge'（如果你用的是官方支持的 channel）
     executable = "C:\\Program Files (x86)\\Microsoft\\Edge\\Application\\msedge.exe"
-    browser = await launch(headless=True, executablePath=executable, args=['--blink-settings=imagesEnabled=false'])
+    async with async_playwright() as p:
+        browser = await p.chromium.launch(headless=True, executable_path=executable,
+                                          args=['--blink-settings=imagesEnabled=false'])
+        try:
+            if not os.path.isfile('init.json'):
+                print('init.json not found')
+                return
 
-    try:
-        if not os.path.isfile('init.json'):
-            print('init.json not found')
-            return
+            with open('init.json', 'r', encoding='utf-8') as f:
+                select = json.load(f)
+            for i, v in enumerate(select['select']):
+                v['id'] = i + 1
 
-        with open('init.json', 'r', encoding='utf-8') as f:
-            select = json.load(f)
-        for i, v in enumerate(select['select']):
-            v['id'] = i + 1
+            sem = asyncio.Semaphore(6)
 
-        sem = asyncio.Semaphore(6)
+            async def task(v, i):
+                async with sem:
+                    try:
+                        await SubGet(browser).initialize(v['url'], v.get('sel'), i + 1)
+                    except Exception as e:
+                        print(f"{i + 1} failed: {v['url']}", e)
 
-        async def task(v, i):
-            async with sem:
-                try:
-                    await SubGet(browser).initialize(v['url'], v.get('sel'), i + 1)
-                except Exception as e:
-                    # 恢复原始输出格式
-                    print(f"{i + 1} failed: {v['url']}", e)
+            tasks = [task(v, i) for i, v in enumerate(select['select'])]
+            await asyncio.gather(*tasks)
 
-        tasks = [task(v, i) for i, v in enumerate(select['select'])]
-        await asyncio.gather(*tasks)
-
-        cleanup_database(sorted(not_clean_arr))
-    finally:
-        await browser.close()
+            cleanup_database(sorted(not_clean_arr))
+        finally:
+            await browser.close()
 
 
 if __name__ == '__main__':
