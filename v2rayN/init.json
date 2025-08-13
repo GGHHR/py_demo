@@ -1,6 +1,10 @@
 {
     "select": [
         {
+            "url": "https://raw.githubusercontent.com/roosterkid/openproxylist/main/V2RAY_BASE64.txt",
+            "id": 1
+        },
+        {
             "url": "https://raw.githubusercontent.com/w1770946466/Auto_proxy/main/Long_term_subscription2",
             "id": 1
         },
