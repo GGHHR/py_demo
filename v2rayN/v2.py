@@ -65,6 +65,7 @@ class SubGet:
             up_sub_item(url, url, id_, convert_target)
         else:
             page = await self.browser.newPage()
+            page.setDefaultNavigationTimeout(60000)
             try:
                 await page.goto(url)
                 if isinstance(sel, list) and len(sel) >= 1:
