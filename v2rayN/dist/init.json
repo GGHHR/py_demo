@@ -1,28 +1,22 @@
 {
     "select": [
         {
-            "url": "https://raw.githubusercontent.com/roosterkid/openproxylist/main/V2RAY_BASE64.txt",
-            "id": 1
+            "url": "https://raw.githubusercontent.com/roosterkid/openproxylist/main/V2RAY_BASE64.txt"
         },
         {
-            "url": "https://raw.githubusercontent.com/w1770946466/Auto_proxy/main/Long_term_subscription2",
-            "id": 1
+            "url": "https://raw.githubusercontent.com/w1770946466/Auto_proxy/main/Long_term_subscription2"
         },
         {
-            "url": " https://raw.githubusercontent.com/StormragerCN/v2ray/refs/heads/main/v2ray",
-            "id": 2
+            "url": " https://raw.githubusercontent.com/StormragerCN/v2ray/refs/heads/main/v2ray"
         },
         {
-            "url": " https://ghfile.geekertao.top/https://github.com/PuddinCat/BestClash/blob/main/proxies.yaml",
-            "id": 3
+            "url": " https://ghfile.geekertao.top/https://github.com/PuddinCat/BestClash/blob/main/proxies.yaml"
         },
         {
-            "url": " https://raw.githubusercontent.com/ccpthisbigdog/freedomchina/refs/heads/main/subdom.txt",
-            "id": 4
+            "url": " https://raw.githubusercontent.com/ccpthisbigdog/freedomchina/refs/heads/main/subdom.txt"
         },
         {
-            "url": "https://raw.githubusercontent.com/hello-world-1989/cn-news/main/end-gfw-together",
-            "id": 5
+            "url": "https://raw.githubusercontent.com/hello-world-1989/cn-news/main/end-gfw-together"
         },
         {
             "url": "https://raw.githubusercontent.com/Leon406/SubCrawler/refs/heads/main/sub/share/v2",
