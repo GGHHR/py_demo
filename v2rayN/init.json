@@ -247,8 +247,8 @@
         {
             "url": "https://freenode.openrunner.net/tag/v2ray/",
             "sel": [
-                ".mb-5 ",
-                ".highlight:nth-of-type(2)  code "
+                ".mb-5",
+                "code"
             ],
             "id": 42
         },
