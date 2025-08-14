@@ -94,8 +94,11 @@ class SubGet:
 
                 # 等主选择器出现并抓取所有元素文本
                 await page.wait_for_selector(el, timeout=60000)
-                contents = await page.eval_on_selector_all(el, "els => els.map(e => e.textContent)")
+
+                contents = await page.eval_on_selector_all(el, "els => els.map(e => e.textContent || e.value)")
+
                 url_pattern = re.compile(r'https?://[^\s/$.?#].[^\s]*')
+
                 for i, content in enumerate(contents):
                     if not content:
                         continue

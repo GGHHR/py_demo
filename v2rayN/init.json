@@ -1,6 +1,22 @@
 {
     "select": [
         {
+            "url": "https://zh.v2nodes.com/country/us/",
+            "sel": [
+                "input"
+            ]
+        },{
+            "url": "https://zh.v2nodes.com/country/sg/",
+            "sel": [
+                "input"
+            ]
+        },{
+            "url": "https://zh.v2nodes.com/country/fr/",
+            "sel": [
+                "input"
+            ]
+        },
+        {
             "url": "https://raw.githubusercontent.com/roosterkid/openproxylist/main/V2RAY_BASE64.txt"
         },
         {
