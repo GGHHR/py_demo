@@ -146,12 +146,10 @@ class SubGet:
 
                 if list_el:
                     try:
-                        print(f"等待选择器 {list_el}")
                         await page.wait_for_selector(list_el, timeout=10000, state="attached")
                         element = await page.query_selector(list_el)
                         if element:
                             href = await element.get_attribute('href')
-                            print(f"找到 href: {href}")
                             if href:
                                 full_href = await page.evaluate('(href) => new URL(href, location.href).href', href)
                                 print(f"跳转到 {full_href}")
@@ -164,7 +162,6 @@ class SubGet:
                         print(f"处理 {list_el} 时出错: {e}")
 
                 if el:
-                    print(f"等待选择器 {el}")
                     await page.wait_for_selector(el, timeout=120000, state="attached")
                     contents = await page.eval_on_selector_all(el, "els => els.map(e => e.textContent || e.value)")
                     url_pattern = re.compile(r'https?://[^\s/$.?#].[^\s]*')
@@ -181,7 +178,7 @@ class SubGet:
                                     num_add += 1
                                     base = len(select['select']) if select and 'select' in select else 0
                                     num = base + num_add
-                            print(f"ID {id_} - 新增 ID {num} - 链接: {match_url}")
+                            print(f"{id_} - ID {num} - 链接: {match_url}")
                             up_sub_item(match_url, match_url, num, convert_target)
         finally:
             await asyncio.sleep(1)
