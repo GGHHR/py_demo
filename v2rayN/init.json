@@ -158,7 +158,7 @@
             "url": "https://free.datiya.com/",
             "sel": [
                 ".fw1  a",
-                ".lh-copy pre:nth-of-type(2) code"
+                "code"
             ],
             "id": 29
         },
