@@ -72,7 +72,7 @@ class SubGet:
         if not selectors:
             return []
         el = selectors[0]
-        await page.wait_for_selector(el, timeout=60000)
+        await page.wait_for_selector(el, timeout=60000, state="attached")
         if len(selectors) == 1:
             contents = await page.eval_on_selector_all(el, "els => els.map(e => e.textContent || e.value || '')")
             url_pattern = re.compile(r'https?://[^\s/$.?#].[^\s]*')
@@ -93,7 +93,7 @@ class SubGet:
                     new_page = await self.browser.new_page()
                     new_page.set_default_navigation_timeout(60000)
                     try:
-                        await new_page.goto(full_href, timeout=60000)
+                        await new_page.goto(full_href, wait_until="networkidle", timeout=60000)
                         sub_match_urls = await self.scrape_level(new_page, selectors[1:])
                         all_match_urls.extend(sub_match_urls)
                     except Exception as e:
@@ -115,7 +115,7 @@ class SubGet:
         page = await self.browser.new_page()
         page.set_default_navigation_timeout(60000)
         try:
-            await page.goto(url, timeout=60000)
+            await page.goto(url, wait_until="networkidle", timeout=60000)
             if all_levels:
                 match_urls = await self.scrape_level(page, selectors)
                 base = len(select['select']) if select and 'select' in select else 0
@@ -143,17 +143,17 @@ class SubGet:
 
                 if list_el:
                     try:
-                        await page.wait_for_selector(list_el, timeout=10000)
+                        await page.wait_for_selector(list_el, timeout=10000, state="attached")
                         element = await page.query_selector(list_el)
                         if element:
                             href = await element.get_attribute('href')
                             if href:
-                                await page.goto(href, timeout=60000)
+                                await page.goto(href, wait_until="networkidle", timeout=60000)
                     except Exception:
                         pass
 
                 if el:
-                    await page.wait_for_selector(el, timeout=60000)
+                    await page.wait_for_selector(el, timeout=60000, state="attached")
                     contents = await page.eval_on_selector_all(el, "els => els.map(e => e.textContent || e.value)")
                     url_pattern = re.compile(r'https?://[^\s/$.?#].[^\s]*')
                     for i, content in enumerate(contents):
