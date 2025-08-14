@@ -1,19 +1,9 @@
 {
     "select": [
         {
-            "url": "https://zh.v2nodes.com/country/us/",
-            "sel": [
-                "input"
-            ]
-        },{
-            "url": "https://zh.v2nodes.com/country/sg/",
-            "sel": [
-                "input"
-            ]
-        },{
-            "url": "https://zh.v2nodes.com/country/fr/",
-            "sel": [
-                "input"
+            "url": "https://zh.v2nodes.com/",
+            "sel_all": [
+                ".btn-default","input"
             ]
         },
         {

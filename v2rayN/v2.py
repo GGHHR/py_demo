@@ -5,7 +5,6 @@ import os
 import sqlite3
 import json
 import re
-
 not_clean_arr = set()
 num_add = 0
 select = None
@@ -108,15 +107,19 @@ class SubGet:
                         convert_target = "mixed" if match_url.endswith(('.yaml', '.yml')) else ""
                         num = id_
                         if i > 0:
-                            num_add += 1
-                            base = len(select['select']) if select and 'select' in select else 0
-                            num = base + num_add
+                            async with lock:
+                                num_add += 1
+                                base = len(select['select']) if select and 'select' in select else 0
+                                num = base + num_add
                         print(id_, num, match_url)
                         # 保持 remarks 有意义，使用 match_url 作为 remarks
                         up_sub_item(match_url, match_url, num, convert_target)
         finally:
             await asyncio.sleep(1)
             await page.close()
+
+
+
 
 
 def cleanup_database(num):
@@ -147,6 +150,82 @@ def cleanup_database(num):
         print('v2rayn is not running')
 
 
+class SubGet1:
+    async def scrape_level(self, page, selectors):
+        if not selectors:
+            return []
+
+        el = selectors[0]
+        await page.wait_for_selector(el, timeout=60000)
+
+        if len(selectors) == 1:
+            contents = await page.eval_on_selector_all(el, "els => els.map(e => e.textContent || e.value || '')")
+            url_pattern = re.compile(r'https?://[^\s/$.?#].[^\s]*')
+            match_urls = []
+            for content in contents:
+                if content:
+                    match = url_pattern.search(content)
+                    if match:
+                        match_urls.append(match.group(0))
+            return match_urls
+        else:
+            elements = await page.query_selector_all(el)
+            all_match_urls = []
+            for element in elements:
+                href = await element.get_attribute('href')
+                if href:
+                    full_href = await page.evaluate('(href) => new URL(href, location.href).href', href)
+                    new_page = await self.browser.new_page()
+                    new_page.set_default_navigation_timeout(60000)
+                    try:
+                        await new_page.goto(full_href, timeout=60000)
+                        sub_match_urls = await self.scrape_level(new_page, selectors[1:])
+                        all_match_urls.extend(sub_match_urls)
+                    except Exception as e:
+                        print(f"Failed to process {full_href}: {e}")
+                    finally:
+                        await new_page.close()
+            return all_match_urls
+
+    def __init__(self, browser):
+        self.browser = browser
+
+    async def initialize(self, url, sel, id_):
+        global not_clean_arr, num_add, select
+        if id_ not in not_clean_arr:
+            not_clean_arr.add(id_)
+        if sel is None:
+            convert_target = "mixed" if url.endswith(('.yaml', '.yml')) else ""
+            print(id_, url)
+            # 保持 remarks 有意义，使用 url 作为 remarks
+            up_sub_item(url, url, id_, convert_target)
+            return
+
+        page = await self.browser.new_page()
+        page.set_default_navigation_timeout(60000)
+        try:
+            await page.goto(url, timeout=60000)
+            match_urls = await self.scrape_level(page, sel)
+            base = len(select['select']) if select and 'select' in select else 0
+            first = True
+            for match_url in match_urls:
+                convert_target = "mixed" if match_url.endswith(('.yaml', '.yml')) else ""
+                if first:
+                    num = id_
+                    first = False
+                else:
+                    async with lock:
+                        num_add += 1
+                        num = base + num_add
+                print(id_, num, match_url)
+                # 保持 remarks 有意义，使用 match_url 作为 remarks
+                up_sub_item(match_url, match_url, num, convert_target)
+        finally:
+            await asyncio.sleep(1)
+            await page.close()
+
+
+
 async def main():
     global select, not_clean_arr, num_add
 
@@ -167,11 +246,19 @@ async def main():
                 v['id'] = i + 1
 
             sem = asyncio.Semaphore(6)
+            global lock
+            lock = asyncio.Lock()
 
             async def task(v, i):
                 async with sem:
                     try:
-                        await SubGet(browser).initialize(v['url'], v.get('sel'), i + 1)
+
+                        if v.get('sel_all'):
+
+                            await SubGet1(browser).initialize(v['url'], v.get('sel_all'), i + 1)
+
+                        else:
+                            await SubGet(browser).initialize(v['url'], v.get('sel'), i + 1)
                     except Exception as e:
                         print(f"{i + 1} failed: {v['url']}", e)
 
