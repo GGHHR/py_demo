@@ -10,6 +10,7 @@ not_clean_arr = set()
 num_add = 0
 select = None
 
+
 def get_running_v2rayn_path():
     for proc in psutil.process_iter(['name', 'exe']):
         try:
@@ -19,6 +20,7 @@ def get_running_v2rayn_path():
         except (psutil.NoSuchProcess, psutil.AccessDenied):
             continue
     return None
+
 
 def up_sub_item(url, remarks, id_, convert_target):
     if id_ not in not_clean_arr:
@@ -36,19 +38,20 @@ def up_sub_item(url, remarks, id_, convert_target):
             cursor.execute(insert_or_update_sql, (str(id_), url, str(id_), convert_target, id_))
             conn.commit()
         except sqlite3.Error as e:
-            print(f"Database error: {e}")
+            print(f"数据库错误: {e}")
         finally:
             conn.close()
     else:
-        print('v2rayn is not running')
+        print('v2rayN 未运行')
+
 
 def cleanup_database(num_list):
     command = get_running_v2rayn_path()
     if not command:
-        print('v2rayn is not running')
+        print('v2rayN 未运行')
         return
     if not num_list:
-        print(f'Successfully deleted records not in {num_list}. Deleted rows: 0')
+        print(f'未提供保留的记录列表，删除了 0 条记录')
         return
     db_path = os.path.join(command, 'guiConfigs', 'guiNDB.db')
     try:
@@ -58,11 +61,12 @@ def cleanup_database(num_list):
         delete_sql = f'DELETE FROM SubItem WHERE sort NOT IN ({placeholders})'
         cursor.execute(delete_sql, num_list)
         conn.commit()
-        print(f'Successfully deleted records not in {num_list}. Deleted rows: {cursor.rowcount}')
+        print(f'删除了不在 {num_list} 中的记录，共 {cursor.rowcount} 条')
     except sqlite3.Error as e:
-        print(f'Delete error: {e}')
+        print(f'删除错误: {e}')
     finally:
         conn.close()
+
 
 class SubGet:
     def __init__(self, browser):
@@ -96,7 +100,7 @@ class SubGet:
                         sub_match_urls = await self.scrape_level(new_page, selectors[1:])
                         all_match_urls.extend(sub_match_urls)
                     except Exception as e:
-                        print(f"Failed to process {full_href}: {e}")
+                        print(f"处理 {full_href} 失败: {e}")
                     finally:
                         await new_page.close()
             return all_match_urls
@@ -107,12 +111,13 @@ class SubGet:
             not_clean_arr.add(id_)
         if selectors is None:
             convert_target = "mixed" if url.endswith(('.yaml', '.yml')) else ""
-            print(id_, url)
+            print(f"ID {id_} - {url}")
             up_sub_item(url, url, id_, convert_target)
             return
 
         page = await self.browser.new_page()
         try:
+            print(f"正在访问 {url}")
             await page.goto(url, wait_until="networkidle", timeout=120000)
             if all_levels:
                 match_urls = await self.scrape_level(page, selectors)
@@ -127,7 +132,7 @@ class SubGet:
                         async with lock:
                             num_add += 1
                             num = base + num_add
-                    print(id_, num, match_url)
+                    print(f"ID {id_} - 新增 ID {num} - 链接: {match_url}")
                     up_sub_item(match_url, match_url, num, convert_target)
             else:
                 if isinstance(selectors, list) and selectors:
@@ -141,16 +146,25 @@ class SubGet:
 
                 if list_el:
                     try:
+                        print(f"等待选择器 {list_el}")
                         await page.wait_for_selector(list_el, timeout=10000, state="attached")
                         element = await page.query_selector(list_el)
                         if element:
                             href = await element.get_attribute('href')
+                            print(f"找到 href: {href}")
                             if href:
-                                await page.goto(href, wait_until="networkidle", timeout=120000)
-                    except Exception:
-                        pass
+                                full_href = await page.evaluate('(href) => new URL(href, location.href).href', href)
+                                print(f"跳转到 {full_href}")
+                                await page.goto(full_href, wait_until="networkidle", timeout=120000)
+                            else:
+                                print(f"选择器 {list_el} 未找到 href 属性")
+                        else:
+                            print(f"选择器 {list_el} 未找到元素")
+                    except Exception as e:
+                        print(f"处理 {list_el} 时出错: {e}")
 
                 if el:
+                    print(f"等待选择器 {el}")
                     await page.wait_for_selector(el, timeout=120000, state="attached")
                     contents = await page.eval_on_selector_all(el, "els => els.map(e => e.textContent || e.value)")
                     url_pattern = re.compile(r'https?://[^\s/$.?#].[^\s]*')
@@ -167,11 +181,12 @@ class SubGet:
                                     num_add += 1
                                     base = len(select['select']) if select and 'select' in select else 0
                                     num = base + num_add
-                            print(id_, num, match_url)
+                            print(f"ID {id_} - 新增 ID {num} - 链接: {match_url}")
                             up_sub_item(match_url, match_url, num, convert_target)
         finally:
             await asyncio.sleep(1)
             await page.close()
+
 
 async def main():
     global select, lock
@@ -181,7 +196,7 @@ async def main():
                                           args=['--blink-settings=imagesEnabled=false'])
         try:
             if not os.path.isfile('init.json'):
-                print('init.json not found')
+                print('未找到 init.json 文件')
                 return
 
             with open('init.json', 'r', encoding='utf-8') as f:
@@ -200,7 +215,7 @@ async def main():
                         else:
                             await SubGet(browser).initialize(v['url'], v.get('sel'), i + 1)
                     except Exception as e:
-                        print(f"{i + 1} failed: {v['url']}", e)
+                        print(f"任务 {i + 1} 失败: {v['url']}，错误: {e}")
 
             tasks = [task(v, i) for i, v in enumerate(select['select'])]
             await asyncio.gather(*tasks)
@@ -208,6 +223,7 @@ async def main():
             cleanup_database(sorted(not_clean_arr))
         finally:
             await browser.close()
+
 
 if __name__ == '__main__':
     asyncio.run(main())
