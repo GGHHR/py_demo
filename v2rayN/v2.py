@@ -40,7 +40,7 @@ def up_sub_item(url, remarks, id_, convert_target):
             VALUES (?, ?, ?, ?, ?)
         '''
         try:
-            cursor.execute(insert_or_update_sql, (str(remarks), url, str(id_), convert_target, id_))
+            cursor.execute(insert_or_update_sql, (str(id_), url, str(id_), convert_target, id_))
             conn.commit()
         except sqlite3.Error as e:
             print(f"Database error: {e}")
