@@ -91,7 +91,6 @@ class SubGet:
                 if href:
                     full_href = await page.evaluate('(href) => new URL(href, location.href).href', href)
                     new_page = await self.browser.new_page()
-                    new_page.set_default_navigation_timeout(120000)
                     try:
                         await new_page.goto(full_href, wait_until="networkidle", timeout=120000)
                         sub_match_urls = await self.scrape_level(new_page, selectors[1:])
@@ -113,7 +112,6 @@ class SubGet:
             return
 
         page = await self.browser.new_page()
-        page.set_default_navigation_timeout(120000)
         try:
             await page.goto(url, wait_until="networkidle", timeout=120000)
             if all_levels:
