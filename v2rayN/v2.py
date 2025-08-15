@@ -111,13 +111,12 @@ class SubGet:
             not_clean_arr.add(id_)
         if selectors is None:
             convert_target = "mixed" if url.endswith(('.yaml', '.yml')) else ""
-            print(f"ID {id_} - {url}")
+            print(f" {id_} - {url}")
             up_sub_item(url, url, id_, convert_target)
             return
 
         page = await self.browser.new_page()
         try:
-            print(f"正在访问 {url}")
             await page.goto(url, wait_until="networkidle", timeout=120000)
             if all_levels:
                 match_urls = await self.scrape_level(page, selectors)
@@ -132,7 +131,7 @@ class SubGet:
                         async with lock:
                             num_add += 1
                             num = base + num_add
-                    print(f"ID {id_} - 新增 ID {num} - 链接: {match_url}")
+                    print(f" {id_} -  {num} - 链接: {match_url}")
                     up_sub_item(match_url, match_url, num, convert_target)
             else:
                 if isinstance(selectors, list) and selectors:
@@ -152,7 +151,6 @@ class SubGet:
                             href = await element.get_attribute('href')
                             if href:
                                 full_href = await page.evaluate('(href) => new URL(href, location.href).href', href)
-                                print(f"跳转到 {full_href}")
                                 await page.goto(full_href, wait_until="networkidle", timeout=120000)
                             else:
                                 print(f"选择器 {list_el} 未找到 href 属性")
