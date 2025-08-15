@@ -131,7 +131,7 @@ class SubGet:
                         async with lock:
                             num_add += 1
                             num = base + num_add
-                    print(f" {id_} -  {num} - 链接: {match_url}")
+                    print(f" {id_} -  {num}  {match_url}")
                     up_sub_item(match_url, match_url, num, convert_target)
             else:
                 if isinstance(selectors, list) and selectors:
@@ -176,7 +176,7 @@ class SubGet:
                                     num_add += 1
                                     base = len(select['select']) if select and 'select' in select else 0
                                     num = base + num_add
-                            print(f"{id_} - {num} - 链接: {match_url}")
+                            print(f"{id_} - {num}  {match_url}")
                             up_sub_item(match_url, match_url, num, convert_target)
         finally:
             await asyncio.sleep(1)
