@@ -111,7 +111,7 @@ class SubGet:
             not_clean_arr.add(id_)
         if selectors is None:
             convert_target = "mixed" if url.endswith(('.yaml', '.yml')) else ""
-            print(f" {id_} - {url}")
+            print(f"{id_} - {url}")
             up_sub_item(url, url, id_, convert_target)
             return
 
@@ -131,7 +131,7 @@ class SubGet:
                         async with lock:
                             num_add += 1
                             num = base + num_add
-                    print(f" {id_} -  {num}  {match_url}")
+                    print(f"{id_} -  {num}  {match_url}")
                     up_sub_item(match_url, match_url, num, convert_target)
             else:
                 if isinstance(selectors, list) and selectors:
