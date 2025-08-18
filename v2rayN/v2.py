@@ -187,8 +187,29 @@ async def main():
     global select, lock
     executable = "C:\\Program Files (x86)\\Microsoft\\Edge\\Application\\msedge.exe"
     async with async_playwright() as p:
-        browser = await p.chromium.launch(headless=True, executable_path=executable,
-                                          args=['--blink-settings=imagesEnabled=false'])
+        browser = await p.chromium.launch(
+            headless=True,
+            executable_path=executable,
+            args=[
+                "--disable-gpu",  # 禁用 GPU，加快启动，省内存
+                "--disable-software-rasterizer",  # 禁用软件光栅化
+                "--disable-dev-shm-usage",  # 避免 /dev/shm 限制，防止内存占用爆掉
+                "--disable-extensions",  # 禁用扩展
+                "--disable-background-networking",  # 禁用后台网络活动
+                "--disable-default-apps",  # 禁用默认应用
+                "--no-sandbox",  # 去掉沙盒（不安全，但更快，CI 常用）
+                "--no-first-run",  # 跳过首次运行检查
+                "--no-default-browser-check",  # 不检查默认浏览器
+                "--disable-sync",  # 禁用同步服务
+                "--disable-translate",  # 禁用翻译
+                "--disable-background-timer-throttling",  # 禁用后台定时器节流
+                "--disable-renderer-backgrounding",  # 禁用渲染器后台化
+                "--disable-features=TranslateUI",  # 禁用翻译 UI
+                "--blink-settings=imagesEnabled=false",  # 禁用图片（你已有）
+                "--mute-audio",  # 静音，避免音频加载
+            ]
+        )
+
         try:
             if not os.path.isfile('init.json'):
                 print('未找到 init.json 文件')
