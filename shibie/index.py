@@ -1,64 +1,36 @@
+import asyncio
 import os
-import cv2
-import numpy as np
-import pyautogui
-import time
-import keyboard
+from playwright.async_api import async_playwright
 
-def find_and_click(img_name):
-    image_paths = []
-    if os.path.isdir(img_name):
-        for file in os.listdir(img_name):
-            full_path = os.path.join(img_name, file)
-            if os.path.isdir(full_path):
-                image_paths.extend(find_and_click(full_path))
-            elif file.endswith('.png'):
-                image_paths.append(full_path)
-    elif img_name.endswith('.png'):
-        image_paths.append(img_name)
-    return image_paths
+STATE_FILE = "state.json"
 
+async def run():
+    async with async_playwright() as p:
+        executable = "C:\\Program Files (x86)\\Microsoft\\Edge\\Application\\msedge.exe"
 
-def move_mouse_to_image(file_path):
+        if os.path.exists(STATE_FILE):
+            # 有登录信息 → 直接用
+            browser = await p.chromium.launch(headless=False, executable_path=executable)
+            context = await browser.new_context(storage_state=STATE_FILE)
+            print("✅ 已加载登录信息")
+        else:
+            # 没有登录信息 → 先登录一次
+            browser = await p.chromium.launch(headless=False, executable_path=executable)
+            context = await browser.new_context()
+            page = await context.new_page()
+            await page.goto("https://www.douyu.com/directory/watchHistory")
 
-    # 使用 pyautogui 查找图片位置
-    print(file_path)
+            print("⚠️ 请在页面完成登录，15 秒后保存状态")
+            await page.wait_for_timeout(15000)
 
-    image_to_find = cv2.imread(file_path)
-    # 获取屏幕截图
-    screenshot = pyautogui.screenshot()
+            await context.storage_state(path=STATE_FILE)
+            print("💾 登录信息已保存")
 
-    # 将截图转换为OpenCV格式
-    screenshot_cv = np.array(screenshot)
-    screenshot_cv = cv2.cvtColor(screenshot_cv, cv2.COLOR_RGB2BGR)
+        # 不管是否有 state.json，最后都会访问页面
+        page = await context.new_page()
+        await page.goto("https://www.douyu.com/directory/watchHistory")
 
-    # 在屏幕截图上查找图像
-    result = cv2.matchTemplate(screenshot_cv, image_to_find, cv2.TM_CCOEFF_NORMED)
+        await page.wait_for_timeout(5000)
+        await browser.close()
 
-    # 设定阈值
-    threshold = 0.8
-    loc = np.where(result >= threshold)
-
-    # 画矩形
-    for pt in zip(*loc[::-1]):
-        cv2.rectangle(screenshot_cv, pt, (pt[0] + image_to_find.shape[1], pt[1] + image_to_find.shape[0]), (0, 255, 0),
-                      2)
-        x, y = pt
-        w, h = image_to_find.shape[:-1]
-        x += h // 2
-        y += w // 2
-
-        pyautogui.click(x, y)
-
-def run():
-    #退出程序
-    keyboard.add_hotkey('esc', lambda: os._exit(0))
-    # 查找图片路径
-    paths = find_and_click(os.path.dirname(os.path.abspath(__file__)))
-    while True:
-        time.sleep(0.5)
-        for file in paths:
-            # 识别图片
-            move_mouse_to_image(file)
-
-run()
+asyncio.run(run())
