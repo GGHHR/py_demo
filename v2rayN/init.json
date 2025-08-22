@@ -195,7 +195,7 @@
             "id": 33
         },
         {
-            "url": "https://nodefree.org/",
+            "url": "https://nodefree.me/",
             "sel": [
                 ".post-title a",
                 ".section p"
@@ -292,7 +292,7 @@
             "id": 50
         },
         {
-            "url": "https://v2rayshare.com/",
+            "url": "https://v2rayshare.net/",
             "sel": [
                 ".post-title a",
                 ".single-content p:nth-of-type(14)"
