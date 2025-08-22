@@ -96,7 +96,7 @@ class SubGet:
                     full_href = await page.evaluate('(href) => new URL(href, location.href).href', href)
                     new_page = await self.browser.new_page()
                     try:
-                        await new_page.goto(full_href, wait_until="networkidle", timeout=120000)
+                        await new_page.goto(full_href, wait_until="domcontentloaded", timeout=120000)
                         sub_match_urls = await self.scrape_level(new_page, selectors[1:])
                         all_match_urls.extend(sub_match_urls)
                     except Exception as e:
@@ -117,7 +117,7 @@ class SubGet:
 
         page = await self.browser.new_page()
         try:
-            await page.goto(url, wait_until="networkidle", timeout=120000)
+            await page.goto(url, wait_until="domcontentloaded", timeout=120000)
             if all_levels:
                 match_urls = await self.scrape_level(page, selectors)
                 base = len(select['select']) if select and 'select' in select else 0
@@ -151,7 +151,7 @@ class SubGet:
                             href = await element.get_attribute('href')
                             if href:
                                 full_href = await page.evaluate('(href) => new URL(href, location.href).href', href)
-                                await page.goto(full_href, wait_until="networkidle", timeout=120000)
+                                await page.goto(full_href, wait_until="domcontentloaded", timeout=120000)
                             else:
                                 print(f"选择器 {list_el} 未找到 href 属性")
                         else:
