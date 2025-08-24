@@ -206,7 +206,7 @@
             "url": "https://clashnode.github.io/",
             "sel": [
                 ".xcblog-blog-url",
-                "p:nth-of-type(32)"
+                ".xcblog-v2ray-box p"
             ],
             "id": 35
         },
