@@ -76,7 +76,7 @@ class SubGet:
         if not selectors:
             return []
         el = selectors[0]
-        await page.wait_for_selector(el, timeout=120000, state="attached")
+        await page.wait_for_selector(el,state="attached")
         if len(selectors) == 1:
             contents = await page.eval_on_selector_all(el, "els => els.map(e => e.textContent || e.value || '')")
             url_pattern = re.compile(r'https?://[^\s/$.?#].[^\s]*')
@@ -96,7 +96,7 @@ class SubGet:
                     full_href = await page.evaluate('(href) => new URL(href, location.href).href', href)
                     new_page = await self.browser.new_page()
                     try:
-                        await new_page.goto(full_href, wait_until="domcontentloaded", timeout=120000)
+                        await new_page.goto(full_href, wait_until="domcontentloaded")
                         sub_match_urls = await self.scrape_level(new_page, selectors[1:])
                         all_match_urls.extend(sub_match_urls)
                     except Exception as e:
@@ -117,7 +117,7 @@ class SubGet:
 
         page = await self.browser.new_page()
         try:
-            await page.goto(url, wait_until="domcontentloaded", timeout=120000)
+            await page.goto(url, wait_until="domcontentloaded")
             if all_levels:
                 match_urls = await self.scrape_level(page, selectors)
                 base = len(select['select']) if select and 'select' in select else 0
@@ -145,13 +145,14 @@ class SubGet:
 
                 if list_el:
                     try:
-                        await page.wait_for_selector(list_el, timeout=10000, state="attached")
+                        await page.wait_for_selector(list_el, state="attached")
                         element = await page.query_selector(list_el)
                         if element:
                             href = await element.get_attribute('href')
                             if href:
                                 full_href = await page.evaluate('(href) => new URL(href, location.href).href', href)
-                                await page.goto(full_href, wait_until="domcontentloaded", timeout=120000)
+                                await page.goto(full_href, wait_until="domcontentloaded")
+
                             else:
                                 print(f"选择器 {list_el} 未找到 href 属性")
                         else:
@@ -160,7 +161,7 @@ class SubGet:
                         print(f"处理 {list_el} 时出错: {e}")
 
                 if el:
-                    await page.wait_for_selector(el, timeout=120000, state="attached")
+                    await page.wait_for_selector(el, state="attached")
                     contents = await page.eval_on_selector_all(el, "els => els.map(e => e.textContent || e.value)")
                     url_pattern = re.compile(r'https?://[^\s/$.?#].[^\s]*')
                     for i, content in enumerate(contents):
