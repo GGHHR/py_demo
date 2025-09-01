@@ -189,8 +189,8 @@
         {
             "url": "https://www.wanzhuanmi.com/",
             "sel": [
-                ".excerpt-latest a",
-                "p:nth-of-type(12)"
+                ".excerpt  a",
+                "article p"
             ],
             "id": 33
         },

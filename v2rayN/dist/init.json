@@ -110,8 +110,8 @@
         {
             "url": "https://www.85la.com/internet-access/free-network-nodes",
             "sel": [
-                ".paging-aa a",
-                "div div p a[rel=\"noopener\"]"
+                ".index-post-text-small a",
+                "#md_content_2 div p a"
             ],
             "id": 23
         },
@@ -189,8 +189,8 @@
         {
             "url": "https://www.wanzhuanmi.com/",
             "sel": [
-                ".excerpt-latest a",
-                "p:nth-of-type(12)"
+                ".excerpt  a",
+                "article p"
             ],
             "id": 33
         },
@@ -206,7 +206,7 @@
             "url": "https://clashnode.github.io/",
             "sel": [
                 ".xcblog-blog-url",
-                ".xcblog-v2ray-box p"
+                ".col-md-8 p"
             ],
             "id": 35
         },
